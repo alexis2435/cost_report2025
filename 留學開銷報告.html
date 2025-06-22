@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留學開銷報告</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Use Inter font as per instructions */
+            background-color: #f0f4f8; /* Light background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for better scrolling */
+            min-height: 100vh; /* Minimum height to fill viewport */
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 960px; /* Max width for content */
+            width: 100%;
+            background-color: #ffffff; /* White background for the poster */
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        h1, h2 {
+            color: #2c3e50; /* Darker heading color */
+            text-align: center;
+            font-weight: 700;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate; /* For rounded borders */
+            border-spacing: 0;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+        }
+        th {
+            background-color: #e0f2fe; /* Light blue header */
+            font-weight: 600;
+            color: #2563eb; /* Darker blue text */
+        }
+        tr:last-child td {
+            border-bottom: none; /* No border for last row */
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc; /* Subtle stripe effect */
+        }
+        .total-row th, .total-row td {
+            font-weight: 700;
+            background-color: #bfdbfe; /* Stronger blue for total */
+            color: #1e40af;
+            border-top: 2px solid #60a5fa; /* A distinct border for total */
+        }
+        canvas {
+            max-height: 400px; /* Limit chart height */
+            width: 100%; /* Make canvas responsive */
+        }
+        .info-box {
+            background-color: #ecfdf5; /* Light green for positive info */
+            border-left: 5px solid #34d399; /* Green border */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            color: #065f46; /* Dark green text */
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .info-box p {
+            margin-bottom: 0.75rem;
+        }
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="container">
+        <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 text-blue-800">留學開銷報告</h1>
+        <p class="text-center text-lg text-gray-600 mb-6">親愛的媽媽，這份報告是我用心整理的，希望讓您更了解我在華盛頓大學 (Washington University in St. Louis) 的學習與生活開銷，讓您對我更放心！</p>
+
+        <!-- Expense Table -->
+        <div class="rounded-xl overflow-hidden shadow-md">
+            <table>
+                <thead class="text-xl">
+                    <tr>
+                        <th class="rounded-tl-xl">消費名稱</th>
+                        <th>年花費 (美金)</th>
+                        <th>月花費 (美金)</th>
+                    </tr>
+                </thead>
+                <tbody class="text-lg">
+                    <tr>
+                        <td>學費</td>
+                        <td>65,200</td>
+                        <td>5,433 (平均)</td>
+                    </tr>
+                    <tr>
+                        <td>房租（含水電網）</td>
+                        <td>9,350</td>
+                        <td>850</td>
+                    </tr>
+                    <tr>
+                        <td>學生健康保險</td>
+                        <td>2,600</td>
+                        <td>217 (平均)</td>
+                    </tr>
+                    <tr>
+                        <td>課本與參考資料</td>
+                        <td>600</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                        <td>食物</td>
+                        <td>7,200</td>
+                        <td>600</td>
+                    </tr>
+                    <tr>
+                        <td>交通</td>
+                        <td>600</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                        <td>手機通訊</td>
+                        <td>360</td>
+                        <td>30</td>
+                    </tr>
+                    <tr>
+                        <td>日常用品</td>
+                        <td>3,600</td>
+                        <td>300</td>
+                    </tr>
+                    <tr class="total-row">
+                        <th class="rounded-bl-xl">預估年總開銷</th>
+                        <td colspan="2" class="rounded-br-xl">80,510 美金</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Visual Chart -->
+        <h2 class="text-3xl font-bold mt-8 mb-6 text-blue-700">開銷比例圖</h2>
+        <div class="bg-white p-6 rounded-xl shadow-md flex justify-center items-center">
+            <canvas id="expenseChart"></canvas>
+        </div>
+
+        <!-- Additional Explanation -->
+        <h2 class="text-3xl font-bold mt-8 mb-6 text-blue-700">未來計畫與收入預估</h2>
+        <div class="info-box">
+            <p>親愛的媽媽：</p>
+            <p>感謝您一直以來對我的支持與幫助！</p>
+            <p>除了上述的開銷，<strong>我的打工或是擔任助教 (TA)</strong>，<strong>預計每月可賺取約 500 美金</strong>。這筆收入將直接用於我的日常開銷，以減輕您的負擔。</p>
+            <p>更重要的是，我下半學期已決定<strong>以半工半讀 (part-time) 的方式就學</strong>。這意味著我的學分費將會大幅降低，預計<strong>只需負擔不到 5,000 美金</strong>的學分費，這將是學費上非常顯著的節省！</p>
+            <p>我會努力學習並妥善管理開銷，讓您對我放心。再次感謝您的支持！</p>
+            <p class="font-semibold mt-4 text-right">妹妹 Alexis</p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for Chart.js
+        window.onload = function() {
+            // Expense data for the chart
+            const expenses = {
+                '學費': 65200,
+                '房租（含水電網）': 9350,
+                '學生健康保險': 2600,
+                '課本與參考資料': 600,
+                '食物': 7200,
+                '交通': 600,
+                '手機通訊': 360,
+                '日常用品': 3600
+            };
+
+            const expenseNames = Object.keys(expenses);
+            const expenseValues = Object.values(expenses);
+
+            // Chart configuration
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie', // Pie chart for proportion visualization
+                data: {
+                    labels: expenseNames,
+                    datasets: [{
+                        data: expenseValues,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#A1E8D2'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Allow canvas to resize freely within its container
+                    plugins: {
+                        legend: {
+                            position: 'top', // Legend at the top
+                            labels: {
+                                font: {
+                                    size: 14 // Larger font for legend labels
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '各項開銷佔比',
+                            font: {
+                                size: 18, // Larger font for chart title
+                                weight: 'bold'
+                            },
+                            color: '#2c3e50'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    // Format the value as currency and add percentage
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const percentage = ((value / total) * 100).toFixed(2) + '%';
+                                    return label + value.toLocaleString() + ' 美金 (' + percentage + ')';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>
